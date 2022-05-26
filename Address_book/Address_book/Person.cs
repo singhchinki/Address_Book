@@ -117,9 +117,24 @@ namespace Address_book
             while (n > 0)
             {
                 createContacts(); n--;
+            }
+        }
+        public static void addMultiAddressBooks()
+        {
+            Dictionary<string, List<CreatContact>> group = new Dictionary<string, List<CreatContact>>();
+            Console.WriteLine("How many address books you want to add: ");
+            int noOfBooks = Convert.ToInt32(Console.ReadLine());
+            while (noOfBooks > 0)
+            {
+                Console.WriteLine("Enter group name:");
+                string gName = Console.ReadLine();
+                addMultiContacts();
+                group.Add(gName, Program.person);
+                noOfBooks--;
 
             }
         }
+
     }
 
 }
