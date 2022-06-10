@@ -8,6 +8,13 @@ namespace Address_book
 {
     internal class Person
     {
+        public static List<CreatContact> person = new List<CreatContact>();
+        public Dictionary<string, List<CreatContact>> group = new Dictionary<string, List<CreatContact>>();
+        public Dictionary<string, List<string>> byCity = new Dictionary<string, List<string>>();
+        public Dictionary<string, List<string>> ByState = new Dictionary<string, List<string>>();
+    
+
+    {
         public static void createContacts()
         {
             CreatContact contact = new CreatContact();
@@ -30,6 +37,7 @@ namespace Address_book
 
             Program.person.Add(contact);
         }
+    }
         public static void displayContacts()
         {
             if (Program.person.Count == 0)
@@ -121,7 +129,7 @@ namespace Address_book
                 n--;
             }
         }
-        public static void addMultiAddressBooks()
+        public void addMultiAddressBooks()
         {
             Dictionary<string, List<CreatContact>> group = new Dictionary<string, List<CreatContact>>();
             Console.WriteLine("How many address books you want to add: ");
@@ -136,7 +144,7 @@ namespace Address_book
 
             }
         }
-        public static void searchByCityOrState()
+        public void searchByCityOrState()
         {
             Console.WriteLine("Enter City or state to search contacts:");
             string value = Console.ReadLine();
