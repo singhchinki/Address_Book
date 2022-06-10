@@ -114,9 +114,11 @@ namespace Address_book
         {
             Console.WriteLine("How many contacts you want to add:");
             int n = Convert.ToInt32(Console.ReadLine());
+            Program Person = new List<CreatContact>(); //UC-7 No Duplicate Contact
             while (n > 0)
             {
-                createContacts(); n--;
+                createContacts();
+                n--;
             }
         }
         public static void addMultiAddressBooks()
@@ -134,7 +136,8 @@ namespace Address_book
 
             }
         }
-
     }
 
-}
+ }
+
+
