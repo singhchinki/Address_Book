@@ -12,32 +12,39 @@ namespace Address_book
         public Dictionary<string, List<CreatContact>> group = new Dictionary<string, List<CreatContact>>();
         public Dictionary<string, List<string>> byCity = new Dictionary<string, List<string>>();
         public Dictionary<string, List<string>> ByState = new Dictionary<string, List<string>>();
-    
 
-    {
+
+
         public static void createContacts()
         {
             CreatContact contact = new CreatContact();
             Console.WriteLine("Enter First Name: ");
             contact.FirstName = Console.ReadLine();
-            Console.WriteLine("Enter Last Name: ");
-            contact.LastName = Console.ReadLine();
-            Console.WriteLine("Enter Phone Number: ");
-            contact.PhoneNo = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("Enter Address: ");
-            contact.Address = Console.ReadLine();
-            Console.WriteLine("Enter City: ");
-            contact.City = Console.ReadLine();
-            Console.WriteLine("Enter Zip: ");
-            contact.Zip = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter State: ");
-            contact.State = Console.ReadLine();
-            Console.WriteLine("Enter Email: ");
-            contact.Email = Console.ReadLine();
+            if (CreatContact.ReferenceEquals == null)
+            {
 
-            Program.person.Add(contact);
+
+                Console.WriteLine("Enter Last Name: ");
+                contact.LastName = Console.ReadLine();
+                Console.WriteLine("Enter Phone Number: ");
+                contact.PhoneNo = Convert.ToDouble(Console.ReadLine());
+                Console.WriteLine("Enter Address: ");
+                contact.Address = Console.ReadLine();
+                Console.WriteLine("Enter City: ");
+                contact.City = Console.ReadLine();
+                Console.WriteLine("Enter Zip: ");
+                contact.Zip = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter State: ");
+                contact.State = Console.ReadLine();
+                Console.WriteLine("Enter Email: ");
+                contact.Email = Console.ReadLine();
+
+                Program.person.Add(contact);
+            }
+            else
+                Console.WriteLine("Contact already exist in address book.\n");
+
         }
-    }
         public static void displayContacts()
         {
             if (Program.person.Count == 0)
@@ -150,8 +157,8 @@ namespace Address_book
             string value = Console.ReadLine();
             foreach (var Contacts in group.Values)
             {
-                List<CreatContact> city = Contacts.FindAll(p => p.city.ToLower() == value.ToLower());
-                List<CreatContact> state = Contacts.FindAll(p => p.state.ToLower() == value.ToLower());
+                List<CreatContact> city = Contacts.FindAll(p => p.City.ToLower() == value.ToLower());
+                List<CreatContact> state = Contacts.FindAll(p => p.State.ToLower() == value.ToLower());
                 if (city.Count != 0)
                 {
                     Console.WriteLine("All contacts from city {0} are:", value);
@@ -172,8 +179,41 @@ namespace Address_book
                     Console.WriteLine("No contact details availbale for given city/State.");
             }
         }
-    }
 
- }
+        private void displayByCityOrState()
+        {
+            foreach (var key in group.Keys)
+            {
+                foreach (var item in group[key])
+                {
+
+                    if (byCity.ContainsKey(item.City))
+                        byCity[item.City].Add(item.FirstName + " " + item.LastName);
+                    else
+                        byCity.Add(item.City, new List<string>() { item.FirstName + " " + item.LastName });
+                    if (ByState.ContainsKey(item.State))
+                        ByState[item.State].Add(item.FirstName + " " + item.LastName);
+                    else
+                        ByState.Add(item.State, new List<string>() { item.FirstName + " " + item.LastName });
+                }
+            }
+            Console.WriteLine("Contacts by city:");
+            foreach (var key in byCity.Keys)
+            {
+                Console.WriteLine("Contacts from city:" + key);
+                byCity[key].ForEach(x => Console.WriteLine(x));
+
+            }
+            Console.WriteLine("Contacts by state:");
+            foreach (var key in ByState.Keys)
+            {
+                Console.WriteLine("Contacts from state: " + key);
+                ByState[key].ForEach(x => Console.WriteLine(x));
+            }
+
+        }
+    }
+}
+
 
 
