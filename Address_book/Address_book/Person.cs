@@ -14,7 +14,7 @@ namespace Address_book
         public Dictionary<string, List<string>> ByState = new Dictionary<string, List<string>>();
     
 
-    {
+    
         public static void createContacts()
         {
             CreatContact contact = new CreatContact();
@@ -36,7 +36,7 @@ namespace Address_book
             contact.Email = Console.ReadLine();
 
             Program.person.Add(contact);
-        }
+        
     }
         public static void displayContacts()
         {
@@ -150,8 +150,8 @@ namespace Address_book
             string value = Console.ReadLine();
             foreach (var Contacts in group.Values)
             {
-                List<CreatContact> city = Contacts.FindAll(p => p.city.ToLower() == value.ToLower());
-                List<CreatContact> state = Contacts.FindAll(p => p.state.ToLower() == value.ToLower());
+                List<CreatContact> city = Contacts.FindAll(p => p.City.ToLower() == value.ToLower());
+                List<CreatContact> state = Contacts.FindAll(p => p.State.ToLower() == value.ToLower());
                 if (city.Count != 0)
                 {
                     Console.WriteLine("All contacts from city {0} are:", value);
@@ -173,7 +173,7 @@ namespace Address_book
             }
         }
     }
-
  }
+
 
 

@@ -5,6 +5,7 @@ internal class Program
     public static void Main(String[] args) 
     { Console.WriteLine("1.Create Contact\n2.Edit Contact\n3.Delete Contact\n4.Display Contacts\n5.Add Multiple Contacts\n6.Add Multi Address Bookn7.Search By City or State\n8.Exit\n");
         Console.WriteLine("Enter your choice:");
+        Address_book.Person p = new Address_book.Person();
         int choice = Convert.ToInt32(Console.ReadLine()); 
         while (choice != 7) { Console.Clear(); 
             switch (choice)
@@ -19,9 +20,9 @@ internal class Program
               case 5: Address_book.Person.addMultiContacts();
                     break;
               case 6:
-                   Address_book.Person.addMultiAddressBooks();
+                   p.addMultiAddressBooks();
                     break;
-               case 7: Address_book.Person.searchByCityOrState();
+               case 7: p.searchByCityOrState();
                     break;
                 default: Console.Write("Enter valid option.\n");
                     break;
