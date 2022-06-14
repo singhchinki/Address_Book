@@ -12,43 +12,77 @@ namespace Address_book
         public Dictionary<string, List<CreatContact>> group = new Dictionary<string, List<CreatContact>>();
         public Dictionary<string, List<string>> byCity = new Dictionary<string, List<string>>();
         public Dictionary<string, List<string>> ByState = new Dictionary<string, List<string>>();
-    
 
-    {
+
+
         public static void createContacts()
         {
             CreatContact contact = new CreatContact();
             Console.WriteLine("Enter First Name: ");
             contact.FirstName = Console.ReadLine();
-            Console.WriteLine("Enter Last Name: ");
-            contact.LastName = Console.ReadLine();
-            Console.WriteLine("Enter Phone Number: ");
-            contact.PhoneNo = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("Enter Address: ");
-            contact.Address = Console.ReadLine();
-            Console.WriteLine("Enter City: ");
-            contact.City = Console.ReadLine();
-            Console.WriteLine("Enter Zip: ");
-            contact.Zip = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter State: ");
-            contact.State = Console.ReadLine();
-            Console.WriteLine("Enter Email: ");
-            contact.Email = Console.ReadLine();
+            CreatContact contacts = person.FirstOrDefault(p => p.Equals(contact));
+            if (contacts == null)
+            {
 
-            Program.person.Add(contact);
+
+                Console.WriteLine("Enter Last Name: ");
+                contact.LastName = Console.ReadLine();
+                Console.WriteLine("Enter Phone Number: ");
+                contact.PhoneNo = Convert.ToDouble(Console.ReadLine());
+                Console.WriteLine("Enter Address: ");
+                contact.Address = Console.ReadLine();
+                Console.WriteLine("Enter City: ");
+                contact.City = Console.ReadLine();
+                Console.WriteLine("Enter Zip: ");
+                contact.Zip = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter State: ");
+                contact.State = Console.ReadLine();
+                Console.WriteLine("Enter Email: ");
+                contact.Email = Console.ReadLine();
+
+                person.Add(contact);
+
+            }
+            else
+                Console.WriteLine("Contact already exist");
         }
-    }
-        public static void displayContacts()
+
+        public void displayContacts()
         {
-            if (Program.person.Count == 0)
+            if (person.Count == 0)
             {
                 Console.WriteLine("Address book is empty.");
                 return;
             }
-            Console.WriteLine("List of contacts:\n");
-            foreach (var contact in Program.person)
+            Console.WriteLine("1.Total Contacts\n2.Group");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            switch (choice)
             {
-                Console.WriteLine("\nFirst Name: " + contact.FirstName + "\nLast Name: " + contact.LastName + "\nAddress: " + contact.Address + "\nCity: " + contact.City + "\nState: " + contact.State + "\nZip Code: " + contact.Zip + "\nContact No.: " + contact.PhoneNo + "\nEmail address: " + contact.Email + "--\n");
+                case 1:
+                    Console.WriteLine("List of contacts:\n");
+                    foreach (string key in group.Keys)
+                    {
+                        List<CreatContact> contacts = group[key];
+                        foreach (var contact in contacts)
+                        {
+                            Console.WriteLine("\nFirst Name: " + contact.FirstName + "\nLast Name: " + contact.LastName + "\nAddress: " + contact.Address + "\nCity: " + contact.City + "\nState: " + contact.State + "\nZip Code: " + contact.Zip + "\nContact No.: " + contact.PhoneNo + "\nEmail address: " + contact.Email + "--\n");
+                        }
+                    }
+                    break;
+                case 2:
+                    foreach (string key in group.Keys)
+                    {
+                        Console.WriteLine(key);
+                    }
+                    Console.WriteLine("Enter group you want to display.");
+                    string gName = Console.ReadLine();
+                    List<CreatContact> list = group[gName];
+
+                    foreach (var contact in list)
+                        Console.WriteLine("\nFirst Name: " + contact.FirstName + "\nLast Name: " + contact.LastName + "\nAddress: " + contact.Address + "\nCity: " + contact.City + "\nState: " + contact.State + "\nZip Code: " + contact.Zip + "\nContact No.: " + contact.PhoneNo + "\nEmail address: " + contact.Email + "---\n");
+                    break;
+
+
             }
         }
 
@@ -114,15 +148,15 @@ namespace Address_book
             {
                 if (contact.FirstName.Equals(name))
                 {
-                    Program.person.Remove(contact);
+                    person.Remove(contact);
                 }
             }
         }
-        public static void addMultiContacts()
+        public void addMultiContacts()
         {
             Console.WriteLine("How many contacts you want to add:");
             int n = Convert.ToInt32(Console.ReadLine());
-            Program Person = new List<CreatContact>(); //UC-7 No Duplicate Contact
+            person = new List<CreatContact>(); //UC-7 No Duplicate Contact
             while (n > 0)
             {
                 createContacts();
@@ -131,7 +165,6 @@ namespace Address_book
         }
         public void addMultiAddressBooks()
         {
-            Dictionary<string, List<CreatContact>> group = new Dictionary<string, List<CreatContact>>();
             Console.WriteLine("How many address books you want to add: ");
             int noOfBooks = Convert.ToInt32(Console.ReadLine());
             while (noOfBooks > 0)
@@ -139,7 +172,7 @@ namespace Address_book
                 Console.WriteLine("Enter group name:");
                 string gName = Console.ReadLine();
                 addMultiContacts();
-                group.Add(gName, Program.person);
+                group.Add(gName, person.ToList());
                 noOfBooks--;
 
             }
@@ -150,8 +183,8 @@ namespace Address_book
             string value = Console.ReadLine();
             foreach (var Contacts in group.Values)
             {
-                List<CreatContact> city = Contacts.FindAll(p => p.city.ToLower() == value.ToLower());
-                List<CreatContact> state = Contacts.FindAll(p => p.state.ToLower() == value.ToLower());
+                List<CreatContact> city = Contacts.FindAll(p => p.City.ToLower() == value.ToLower());
+                List<CreatContact> state = Contacts.FindAll(p => p.State.ToLower() == value.ToLower());
                 if (city.Count != 0)
                 {
                     Console.WriteLine("All contacts from city {0} are:", value);
@@ -172,8 +205,81 @@ namespace Address_book
                     Console.WriteLine("No contact details availbale for given city/State.");
             }
         }
-    }
+        public void displayByCityOrState()
+        {
+            foreach (var key in group.Keys)
+            {
+                foreach (var item in group[key])
+                {
 
- }
+                    if (byCity.ContainsKey(item.City))
+                        byCity[item.City].Add(item.FirstName + " " + item.LastName);
+                    else
+                        byCity.Add(item.City, new List<string>() { item.FirstName + " " + item.LastName });
+                    if (ByState.ContainsKey(item.State))
+                        ByState[item.State].Add(item.FirstName + " " + item.LastName);
+                    else
+                        ByState.Add(item.State, new List<string>() { item.FirstName + " " + item.LastName });
+                }
+            }
+            Console.WriteLine("Contacts by city:");
+            foreach (var key in byCity.Keys)
+            {
+                Console.WriteLine("Contacts from city:" + key);
+                byCity[key].ForEach(x => Console.WriteLine(x));
+
+            }
+            Console.WriteLine("Contacts by state:");
+            foreach (var key in ByState.Keys)
+            {
+                Console.WriteLine("Contacts from state: " + key);
+                ByState[key].ForEach(x => Console.WriteLine(x));
+            }
+        }
+        public void getCount()
+        {
+            foreach (var key in group.Keys)
+            {
+                foreach (var item in group[key])
+                {
+
+                    if (byCity.ContainsKey(item.City))
+                        byCity[item.City].Add(item.FirstName + " " + item.LastName);
+                    else
+                        byCity.Add(item.City, new List<string>() { item.FirstName + " " + item.LastName });
+                    if (ByState.ContainsKey(item.State))
+                        ByState[item.State].Add(item.FirstName + " " + item.LastName);
+                    else
+                        ByState.Add(item.State, new List<string>() { item.FirstName + " " + item.LastName });
+                }
+            }
+            Console.WriteLine("No. of contacts by city.");
+            foreach (var key in byCity.Keys)
+            {
+                Func<int, int> count = x =>
+                {
+                    foreach (var value in byCity[key])
+                        x += 1;
+                    return x;
+                };
+                Console.WriteLine("No. of contacts in city " + key + " are " + count(0));
+            }
+            Console.WriteLine("No. of contacts by state.");
+            foreach (var key in ByState.Keys)
+            {
+                Func<int, int> count = x =>
+                {
+                    foreach (var value in ByState[key])
+                        x += 1;
+                    return x;
+                };
+                Console.WriteLine("No. of contacts in state " + key + " are " + count(0));
+            }
+
+        }
+    }
+}
+
+
 
 

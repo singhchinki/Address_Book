@@ -16,5 +16,17 @@ namespace Address_book
         public int Zip { get; set; }
         public double PhoneNo { get; set; }
         public string Email { get; set; }
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is CreatContact))
+            {
+                return false;
+            }
+            return this.FirstName == ((CreatContact)obj).FirstName;
+        }
     }
 }
