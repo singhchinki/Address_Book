@@ -275,7 +275,20 @@ namespace Address_book
                 };
                 Console.WriteLine("No. of contacts in state " + key + " are " + count(0));
             }
-
+        }
+        public void WriteToFile()
+        {
+            string file = @"D:\BridgeLabzFellowship\Address_Book\Address_book\Address_book";
+            using StreamWriter writer = File.AppendText(file);
+            {
+                Console.WriteLine("First Name, Last Name, Address, City, State, Zipcode, Phone No, Email");
+                writer.WriteLine(Console.ReadLine());
+                writer.Close();
+            }
         }
     }
+
+   
+
+    
 }
